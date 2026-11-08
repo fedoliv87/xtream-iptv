@@ -24,6 +24,10 @@ body {
 body {
   font-size: 1.625rem; // 26 px at 100 %
   background: $bg-gradient; // the screen is 1080 px tall and does not scroll: the gradient goes from its top to its bottom
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
 }
 
 // AVPlay renders on a plane behind the page: while video plays the page must be see-through.
