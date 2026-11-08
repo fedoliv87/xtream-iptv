@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Xtream IPTV</title>
-  <% if (htmlWebpackPlugin.options.includeWebapis) { %>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xtream IPTV</title>
+    <% if (htmlWebpackPlugin.options.includeWebapis) { %>
     <script src="$WEBAPIS/webapis/webapis.js"></script>
     <% } %>
-</head>
-
-<body>
-  <div id="topbar"></div>
-  <main id="content">
-    <div class="boot-splash">
-      <%= htmlWebpackPlugin.options.logoSvg.trim().replace(/logo-cb/g, 'splash-cb' ) %>
-    </div>
-  </main> <!-- the first page replaces the splash -->
-</body>
-
+  </head>
+  <body>
+    <div id="topbar"></div>
+    <main id="content"><div class="boot-splash"><%= htmlWebpackPlugin.options.logoSvg.trim().replace(/logo-cb/g, 'splash-cb') %></div></main> <!-- the first page replaces the splash -->
+  </body>
 </html>
