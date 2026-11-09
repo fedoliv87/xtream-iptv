@@ -16,9 +16,18 @@ export const IME_CANCEL = 65385;
  * Returns { el (gets the `focused` class), root, input, clearEl, focus, clear, getValue, setValue }.
  */
 export function createField({ label, type = 'text', placeholder = '', inputmode = '', onSubmit = null, onCancel = null, trailing = null, clearable = true, defaultValue = '', onClear = null }) {
-  const input = h('input', { type, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', placeholder: placeholder || null, inputmode: inputmode || null });
-  const clearEl = clearable ? h('span', { class: 'field-clear', 'aria-label': t('field.clear') }, icon('close')) : null;
-  const el = h('label', { class: clearable ? 'field clearable' : 'field' }, h('span', { class: 'field-label', text: label }), input, clearEl);
+  const input = h('input', {
+    type,
+    autocomplete: 'off',
+    autocapitalize: 'off',
+    spellcheck: 'false',
+    placeholder: placeholder || null,
+    inputmode: inputmode || null,
+    tabindex: '0',
+    'data-focusable': 'true',
+  });
+  const clearEl = clearable ? h('span', { class: 'field-clear', 'aria-label': t('field.clear'), role: 'button', tabindex: '0', 'data-focusable': 'true' }, icon('close')) : null;
+  const el = h('label', { class: clearable ? 'field clearable' : 'field', tabindex: '0', 'data-focusable': 'true' }, h('span', { class: 'field-label', text: label }), input, clearEl);
   // The x empties the field (or puts its default value back) and saves it at once, without the keyboard: `onClear(value)` when
   // given (a form that only empties it), otherwise the same `onSubmit` as Done.
   const clear = () => {

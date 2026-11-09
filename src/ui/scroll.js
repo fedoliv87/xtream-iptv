@@ -1,18 +1,25 @@
 /**
  * Pure scroll maths (all positions share one coordinate space, e.g. the viewport).
  * Returns the scrollTop that keeps [elTop, elBottom] inside [viewTop, viewBottom] with a margin.
+ * When `center: true`, calculates scrollTop to center [elTop, elBottom] vertically in [viewTop, viewBottom].
  */
-export function computeScrollTop({ elTop, elBottom, viewTop, viewBottom, scrollTop, margin = 0 }) {
+export function computeScrollTop({ elTop, elBottom, viewTop, viewBottom, scrollTop, margin = 0, center = false }) {
   const viewHeight = viewBottom - viewTop;
+  const elHeight = elBottom - elTop;
+  if (center) {
+    if (elHeight + margin * 2 > viewHeight) return scrollTop + (elTop - margin - viewTop);
+    const targetElTop = viewTop + (viewHeight - elHeight) / 2;
+    return scrollTop + Math.round(elTop - targetElTop);
+  }
   // Taller than the viewport: show its beginning.
-  if (elBottom - elTop + margin * 2 > viewHeight) return scrollTop + (elTop - margin - viewTop);
+  if (elHeight + margin * 2 > viewHeight) return scrollTop + (elTop - margin - viewTop);
   if (elTop - margin < viewTop) return scrollTop - (viewTop - (elTop - margin));
   if (elBottom + margin > viewBottom) return scrollTop + (elBottom + margin - viewBottom);
   return scrollTop;
 }
 
-/** Scrolls the closest `.page` so that `el` is fully visible. `first: true` also reveals the page heading. */
-export function ensureVisible(el, { margin = 32, first = false } = {}) {
+/** Scrolls the closest `.page` so that `el` is fully visible. `first: true` also reveals the page heading. `center: true` centers the element vertically in the view. */
+export function ensureVisible(el, { margin = 32, first = false, center = false } = {}) {
   const page = el && el.closest ? el.closest('.page') : null;
   if (!page) return;
   if (first) {
@@ -33,6 +40,7 @@ export function ensureVisible(el, { margin = 32, first = false } = {}) {
       viewBottom: pageRect.bottom,
       scrollTop: page.scrollTop,
       margin,
+      center,
     }),
   );
   if (next !== page.scrollTop) page.scrollTop = next; // already in view: no write, no extra layout

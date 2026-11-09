@@ -167,11 +167,16 @@
 // The page keeps a fixed-width container (centred); what is inside it stretches to the container.
 .page.framed {
   padding-top: $page-top + 24px;
+  padding-right: 64px;
   padding-bottom: $gutter * 2;
+  padding-left: 64px;
+  box-sizing: border-box;
 
   .page-container {
     max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .sync,

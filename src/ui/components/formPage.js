@@ -53,7 +53,15 @@ export function formModel({ fieldCount, actionCount, clearable = false }) {
  */
 export function createForm({ id, focus, fields: specs, actions }) {
   const status = h('div', { class: 'status', role: 'status' });
-  const actionButtons = actions.map((a) => h('button', { class: `btn${a.primary ? ' primary' : ''}`, type: 'button', text: a.label }));
+  const actionButtons = actions.map((a) =>
+    h('button', {
+      class: `btn${a.primary ? ' primary' : ''}`,
+      type: 'button',
+      text: a.label,
+      tabindex: '0',
+      'data-focusable': 'true',
+    })
+  );
   const total = specs.length + actions.length;
   const fields = specs.map((spec, i) => createField({ ...spec, onSubmit: () => focus.focus(id, Math.min(i + 1, total - 1)), onClear: () => undefined }));
   const nodes = fields.map((f) => f.el).concat(actionButtons, fields.map((f) => f.clearEl));
@@ -63,7 +71,7 @@ export function createForm({ id, focus, fields: specs, actions }) {
     model: formModel({ fieldCount: fields.length, actionCount: actions.length, clearable: true }),
     onFocus: (i) => {
       nodes[i].classList.add('focused');
-      ensureVisible(nodes[i], { first: i === 0 });
+      ensureVisible(nodes[i], { first: i === 0, center: true });
     },
     onBlur: (i) => nodes[i] && nodes[i].classList.remove('focused'),
     onActivate: (i) => {
