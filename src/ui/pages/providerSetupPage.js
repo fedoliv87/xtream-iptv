@@ -6,6 +6,7 @@ import { log } from '../../core/logger.js';
 import { TOPBAR_ZONE } from '../components/topbar.js';
 import { createForm, framedPage } from '../components/formPage.js';
 import { createHomeSkeleton } from './homePage.js';
+import { createPin } from '../components/pinFlows.js';
 
 const ZONE_ID = 'providerSetup';
 
@@ -57,8 +58,19 @@ export function createProviderSetupPage(ctx, params = {}) {
         ctx.catalog.start({ force: true });
         ctx.notices.success(t('notice.added'), { key: 'provider' });
         if (!destroyed) {
-          if (params.firstRun) ctx.router.reset('home', { section: 'home' });
-          else ctx.router.reset('providers', { section: 'provider' });
+          if (params.firstRun) {
+            ctx.router.reset('home', { section: 'home' });
+            setTimeout(() => {
+              if (ctx.parental && ctx.parental.hasPin) {
+                ctx.parental
+                  .hasPin()
+                  .then((has) => (has ? null : createPin({ dialogs: ctx.dialogs, parental: ctx.parental })))
+                  .catch(() => undefined);
+              }
+            }, 800);
+          } else {
+            ctx.router.reset('providers', { section: 'provider' });
+          }
         }
       }
     } catch (err) {

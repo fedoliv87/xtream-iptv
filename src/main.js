@@ -536,16 +536,16 @@ async function boot() {
     queueSearchWarm();
     queueEpg();
     setInterval(queueEpg, 60 * 60 * 1000);
+    // The parental PIN is set the first time the app opens with an active provider (asked again at the next start if it was skipped).
+    setTimeout(() => {
+      ctx.parental
+        .hasPin()
+        .then((has) => (has ? null : createPin({ dialogs: ctx.dialogs, parental: ctx.parental })))
+        .catch((err) => log.warn('PIN setup failed', err && err.message));
+    }, 800);
   } else {
     router.reset('providerSetup', { firstRun: true });
   }
-  // The parental PIN is set the first time the app opens (asked again at the next start if it was skipped).
-  setTimeout(() => {
-    ctx.parental
-      .hasPin()
-      .then((has) => (has ? null : createPin({ dialogs: ctx.dialogs, parental: ctx.parental })))
-      .catch((err) => log.warn('PIN setup failed', err && err.message));
-  }, 800);
 }
 
 /** At every start: a warning when the subscription ends in less than 10 days (an error when it has ended). */

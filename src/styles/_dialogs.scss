@@ -81,14 +81,19 @@
   align-items: center;
   justify-content: center;
   background: rgba($black, 0.75);
+  padding: 54px 96px;
+  box-sizing: border-box;
 }
 
 .dialog {
-  width: 720px;
+  width: 100%;
+  max-width: 720px;
+  max-height: calc(100% - 108px);
   padding: 40px 48px;
   border-radius: 8px;
   background: $bg-raised;
   overflow: hidden; // no scrollbars in dialogs: lists scroll with the focus
+  box-sizing: border-box;
 
   ::-webkit-scrollbar {
     display: none;

@@ -2,8 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=1920, height=1080, initial-scale=1" />
+    <meta name="viewport" content="width=1920, user-scalable=no" />
     <title>Xtream IPTV</title>
+    <script>
+      (function() {
+        function fitViewport() {
+          if (window.innerWidth && window.innerWidth < 1850) {
+            document.documentElement.style.zoom = window.innerWidth / 1920;
+          }
+        }
+        fitViewport();
+        window.addEventListener('resize', fitViewport);
+      })();
+    </script>
     <% if (htmlWebpackPlugin.options.includeWebapis) { %>
     <script src="$WEBAPIS/webapis/webapis.js"></script>
     <% } %>

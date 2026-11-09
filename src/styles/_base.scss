@@ -3,6 +3,13 @@
 
 * {
   box-sizing: border-box;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
 }
 
 html {
@@ -14,7 +21,7 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: hidden !important;
   background: $bg-bottom;
   color: $text;
   font-family: $font;

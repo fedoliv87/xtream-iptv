@@ -2,7 +2,9 @@ package com.xtrmiptv.tv;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import com.getcapacitor.BridgeActivity;
@@ -28,6 +30,18 @@ public class MainActivity extends BridgeActivity {
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
         settings.setMediaPlaybackRequiresUserGesture(false);
+
+        // Hide scrollbars completely and disable bounce/overscroll effects
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+        // Enforce 1920 coordinate scale on TV displays (e.g. 1080p xhdpi = 960 DIP -> 50% scale)
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        float widthInDip = dm.widthPixels / dm.density;
+        int scalePercent = Math.max(1, (int) ((widthInDip / 1920f) * 100));
+        webView.setInitialScale(scalePercent);
+
         webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setFocusable(true);
         webView.requestFocus();
